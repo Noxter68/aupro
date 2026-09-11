@@ -3,7 +3,6 @@ export const SITE = {
   name: "Aupro",
   domain: "aupro.fr",
   url: "https://aupro.fr",
-  tagline: "Le copilote administratif des artisans.",
   contactEmail: "contact@aupro.fr",
   editor: {
     firstName: "David",
