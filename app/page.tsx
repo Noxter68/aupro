@@ -296,7 +296,7 @@ function PhoneShowcase({
   );
 }
 
-type WaitlistStatus = "idle" | "loading" | "done" | "error";
+type WaitlistStatus = "idle" | "loading" | "done" | "already" | "error";
 
 /** Formulaire bêta : envoie l’email à /api/waitlist, qui l’ajoute à l’audience Resend. */
 function WaitlistForm({ compact = false }: { compact?: boolean }) {
@@ -314,14 +314,15 @@ function WaitlistForm({ compact = false }: { compact?: boolean }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, website }),
       });
-      const payload = (await response.json().catch(() => ({}))) as { ok?: boolean };
-      setStatus(response.ok && payload.ok ? "done" : "error");
+      const payload = (await response.json().catch(() => ({}))) as { ok?: boolean; already?: boolean };
+      if (response.ok && payload.ok) setStatus(payload.already ? "already" : "done");
+      else setStatus("error");
     } catch {
       setStatus("error");
     }
   }
 
-  const done = status === "done";
+  const done = status === "done" || status === "already";
   const loading = status === "loading";
 
   return (
@@ -355,7 +356,8 @@ function WaitlistForm({ compact = false }: { compact?: boolean }) {
           </motion.div>
         ) : (
           <motion.div key="success" className="form-success" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-            <CircleCheck size={19} /> Merci — vous êtes sur la liste de la bêta.
+            <CircleCheck size={19} />
+            {status === "already" ? "Vous êtes déjà inscrit à la bêta — on vous tient au courant." : "Merci — vous êtes sur la liste de la bêta."}
           </motion.div>
         )}
       </AnimatePresence>

@@ -53,12 +53,37 @@ export async function POST(request: Request) {
   try {
     const segmentId = await resolveSegmentId(resend);
 
-    const created = await resend.contacts.create({ email, unsubscribed: false, segments: [{ id: segmentId }] });
-    if (!created.error) return NextResponse.json({ ok: true });
+    // 1. Le contact existe-t-il déjà ? (les contacts Resend sont uniques par email : aucun doublon possible)
+    const existing = await resend.contacts.get({ email });
+    if (existing.error && existing.error.name !== "not_found") {
+      throw new Error(`Resend contacts.get : ${existing.error.message}`);
+    }
 
-    // Contact déjà connu (inscription précédente ou autre segment) : on l’ajoute simplement au segment.
+    if (existing.data) {
+      // Réinscription après désabonnement : on réactive le contact.
+      if (existing.data.unsubscribed) {
+        const updated = await resend.contacts.update({ email, unsubscribed: false });
+        if (updated.error) throw new Error(`Resend contacts.update : ${updated.error.message}`);
+      }
+
+      const membership = await resend.contacts.segments.list({ email, limit: 100 });
+      const alreadyInSegment = !membership.error && membership.data.data.some((segment) => segment.id === segmentId);
+      if (alreadyInSegment && !existing.data.unsubscribed) return NextResponse.json({ ok: true, already: true });
+
+      if (!alreadyInSegment) {
+        const added = await resend.contacts.segments.add({ email, segmentId });
+        if (added.error && !/already/i.test(added.error.message)) throw new Error(`Resend segments.add : ${added.error.message}`);
+      }
+      return NextResponse.json({ ok: true, already: false });
+    }
+
+    // 2. Nouveau contact, directement rattaché au segment.
+    const created = await resend.contacts.create({ email, unsubscribed: false, segments: [{ id: segmentId }] });
+    if (!created.error) return NextResponse.json({ ok: true, already: false });
+
+    // Cas limite (créé entre-temps) : on l’ajoute simplement au segment.
     const added = await resend.contacts.segments.add({ email, segmentId });
-    if (!added.error || /already/i.test(added.error.message)) return NextResponse.json({ ok: true });
+    if (!added.error || /already/i.test(added.error.message)) return NextResponse.json({ ok: true, already: true });
 
     console.error("[waitlist] Resend :", created.error.message, "/", added.error.message);
     return NextResponse.json({ ok: false, error: "resend_error" }, { status: 502 });
