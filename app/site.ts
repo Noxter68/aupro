@@ -3,7 +3,7 @@ export const SITE = {
   name: 'Aupro',
   domain: 'aupro.fr',
   url: 'https://aupro.fr',
-  contactEmail: 'contact@aupro.fr',
+  contactEmail: 'davidplanchon.68@gmail.com',
   editor: {
     firstName: 'David',
     lastName: 'Planchon',
