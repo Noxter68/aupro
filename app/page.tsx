@@ -1,6 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import { Logo } from "./components/Logo";
+import { SiteFooter } from "./components/SiteFooter";
+import { SITE } from "./site";
 import { FormEvent, KeyboardEvent, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
@@ -29,7 +32,7 @@ import {
   useTransform,
 } from "motion/react";
 
-const BRAND = "Aupro";
+const BRAND = SITE.name;
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 type IconName = "calendrier" | "chantier" | "devis" | "livraison" | "messages" | "outils" | "photos" | "taches" | "telephone";
@@ -39,15 +42,6 @@ function Ico({ name, size = 24, className = "" }: { name: IconName; size?: numbe
   return (
     <span className={`ico ${className}`} style={{ width: size, height: size }} aria-hidden>
       <Image src={`/icones/${name}.png`} alt="" fill sizes={`${size * 2}px`} style={{ objectFit: "contain" }} />
-    </span>
-  );
-}
-
-/** Logo de l’app (public/logo/aupro-logo.png), déjà arrondi et sur fond bleu foncé. */
-function Logo({ size = 36, className = "" }: { size?: number; className?: string }) {
-  return (
-    <span className={`logo-mark ${className}`} style={{ width: size, height: size }} aria-hidden>
-      <Image src="/logo/aupro-logo.png" alt="" fill sizes={`${size * 2}px`} style={{ objectFit: "contain" }} priority={size >= 36} />
     </span>
   );
 }
@@ -370,7 +364,12 @@ function WaitlistForm({ compact = false }: { compact?: boolean }) {
           Impossible d’enregistrer votre email pour le moment. Réessayez dans un instant.
         </motion.p>
       )}
-      {!compact && !done && <small>Aucune carte bancaire · Accès bêta prioritaire · Désinscription en un clic</small>}
+      {!compact && !done && (
+        <small>
+          Aucune carte bancaire · Désinscription en un clic · En vous inscrivant, vous acceptez notre{" "}
+          <a href="/mentions-legales#donnees">politique de confidentialité</a>.
+        </small>
+      )}
     </form>
   );
 }
@@ -1297,18 +1296,12 @@ export default function Home() {
             <h2>Vos prochains chantiers peuvent déjà être mieux organisés.</h2>
             <p>Rejoignez les premiers artisans qui testeront {BRAND} et participez directement à la construction du produit.</p>
             <WaitlistForm compact />
-            <div className="cta-meta"><span><Check size={15} /> Gratuit pendant la bêta</span><span><Check size={15} /> Places limitées</span></div>
+            <div className="cta-meta"><span><Check size={15} /> Gratuit pendant la bêta</span><span><Check size={15} /> Places limitées</span><a href="/mentions-legales#donnees">Confidentialité</a></div>
           </Reveal>
         </div>
       </section>
 
-      <footer>
-        <div className="container footer-inner">
-          <a className="brand" href="#top"><Logo size={38} />{BRAND}</a>
-          <p>Le copilote administratif des artisans.</p>
-          <span>© 2026 {BRAND}</span>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }
