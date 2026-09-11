@@ -1,0 +1,24 @@
+{
+  "name": "artisan-landing",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "lucide-react": "latest",
+    "motion": "^13.2.0",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "resend": "^6.27.0"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  }
+}

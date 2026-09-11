@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+.DS_Store
+*.tsbuildinfo
+npm-debug.log*
+
+# Secrets — ne jamais committer
+.env
+.env.local
+.env.*.local
