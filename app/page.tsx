@@ -572,16 +572,22 @@ function FeatureVisualBlock({ visual }: { visual: FeatureVisual }) {
     case "photos":
       return (
         <div className="feature-visual photos-mini">
-          {["Avant travaux", "Avancement", "Réserves", "Finitions"].map((label, i) => (
+          {[
+            { label: "Avant travaux", src: "/photos/chantier-avant.jpg", alt: "Pièce en cours de démolition avant travaux" },
+            { label: "Avancement", src: "/photos/chantier-avancement.jpg", alt: "Électricien installant une prise" },
+            { label: "Réserves", src: "/photos/chantier-reserves.jpg", alt: "Rouleau de peinture pour les retouches" },
+            { label: "Finitions", src: "/photos/chantier-finitions.jpg", alt: "Cuisine rénovée terminée" },
+          ].map((photo, i) => (
             <motion.div
-              key={label}
-              className={`photo p${i + 1}`}
+              key={photo.label}
+              className="photo"
               initial={reduce ? false : { opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.35 + i * 0.1, duration: 0.55, ease: EASE }}
             >
-              <span>{label}</span>
+              <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 720px) 45vw, 200px" style={{ objectFit: "cover" }} />
+              <span>{photo.label}</span>
             </motion.div>
           ))}
         </div>

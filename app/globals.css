@@ -274,13 +274,11 @@ h2 { font-family: "Manrope", sans-serif; font-size: clamp(42px, 4.2vw, 66px); li
 .form-mini svg { color: var(--green); }
 
 .photos-mini { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.photo { aspect-ratio: 4 / 3; border-radius: 13px; position: relative; overflow: hidden; box-shadow: var(--shadow-sm); }
-.photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.5)); }
-.photo span { position: absolute; z-index: 1; left: 11px; bottom: 10px; font-size: 12px; font-weight: 700; color: white; letter-spacing: .01em; }
-.photo.p1 { background: linear-gradient(135deg, #bda98c, #6b5b47); }
-.photo.p2 { background: linear-gradient(135deg, #d3c3a8, #8a7a64); }
-.photo.p3 { background: linear-gradient(135deg, #a3b4bb, #4f626c); }
-.photo.p4 { background: linear-gradient(135deg, #e1d5c2, #9d8a70); }
+.photo { aspect-ratio: 4 / 3; border-radius: 13px; position: relative; overflow: hidden; background: #d9d2c4; box-shadow: var(--shadow-sm); }
+.photo img { transition: transform .6s var(--ease); }
+.photo:hover img { transform: scale(1.05); }
+.photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(0,0,0,.6)); pointer-events: none; }
+.photo span { position: absolute; z-index: 1; left: 11px; bottom: 10px; font-size: 12px; font-weight: 700; color: white; letter-spacing: .01em; text-shadow: 0 1px 6px rgba(0,0,0,.4); }
 
 .progress-mini { padding: 18px; background: #f7f4ed; border: 1px solid var(--line); border-radius: 15px; }
 .progress-head { display: flex; justify-content: space-between; align-items: center; font-size: 15px; letter-spacing: -0.01em; }
