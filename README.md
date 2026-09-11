@@ -1,4 +1,4 @@
-# Établi — Landing artisans
+# Aupro — Landing artisans
 
 Landing page Next.js / TypeScript pour tester une waitlist autour d'un assistant de gestion pour artisans.
 
@@ -17,7 +17,7 @@ npm run dev
 Puis ouvrir http://localhost:3000.
 
 ## Personnaliser rapidement
-- Nom du produit : `app/page.tsx` → `const BRAND = "Établi"`
+- Nom du produit : `app/page.tsx` → `const BRAND = "Aupro"`
 - Couleurs : `app/globals.css` → variables dans `:root`
 - Textes / features : tableaux `incomingMessages`, `features` et sections dans `app/page.tsx`
 
